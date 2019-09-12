@@ -20,10 +20,10 @@ import os
 import settings
 
 from sbp.client.drivers.network_drivers import TCPDriver
-from sbp.client.loggers.JSONLogger import JSONLogger
+from sbp.client.loggers.json_logger import JSONLogger
 from sbp.client import Handler, Framer, Forwarder
 from sbp.observation import SBP_MSG_OBS, SBP_MSG_BASE_POS_ECEF, SBP_MSG_GLO_BIASES, SBP_MSG_EPHEMERIS_GPS, SBP_MSG_EPHEMERIS_GLO, SBP_MSG_IONO
-from sbp.logging import SBP_MSG_LOG
+from sbp.logging import SBP_MSG_LOG, MsgLog
 from sbp.piksi import MsgReset
 from sbp.settings import (
     SBP_MSG_SETTINGS_READ_BY_INDEX_DONE, SBP_MSG_SETTINGS_READ_BY_INDEX_RESP,
@@ -139,8 +139,29 @@ def parse_position_data(filename):
     stngs.write("surveyed position", "surveyed alt", alt)
     
 # Perhaps add callback functions to handler
+def log_printer(sbp_msg, **metadata):
+    """
+    Default log callback
 
-def main():
+    Parameters
+    ----------
+    sbp_msg: SBP
+      SBP Message to print out.
+    """
+    levels = {
+        0: 'EMERG',
+        1: 'ALERT',
+        2: 'CRIT',
+        3: 'ERROR',
+        4: 'WARN',
+        5: 'NOTICE',
+        6: 'INFO',
+        7: 'DEBUG'
+    }
+    m = MsgLog(sbp_msg)
+    print(levels[m.level], m.text.decode('ascii', 'replace'))
+
+    def main():
 
     # Open a connection to Piksi using TCP
     with TCPDriver(BASE_HOST, BASE_PORT) as driver:
