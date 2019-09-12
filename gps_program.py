@@ -35,8 +35,8 @@ from sbp.settings import (
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-BASE_STATION_IP = "192.168.0.222"
-BASE_STATION_PORT = "55555"
+BASE_HOST = "192.168.0.222"
+BASE_PORT = "55555"
 
 # Function uploads file using WebDriver to OPUS for processing
 def send_to_OPUS(FILENAME):
