@@ -109,7 +109,9 @@ def parse_position_data(filename):
 
     f_lines = f_read.readlines()
 
-    lat = lon = alt = ""
+    lat = ""
+    lon = ""
+    alt = ""
 
     for line in f_lines:
         tokens = line.split()
@@ -143,22 +145,23 @@ def main():
     # Open a connection to Piksi using TCP
     with TCPDriver(BASE_HOST, BASE_PORT) as driver:
         with Handler(Framer(driver.read, None, verbose=False)) as source:
-            # test this out
             try:
-            base_pos_log(source)
+                base_pos_log(source)
 
-            # returns a tuple of the form (latitude, longitude, altitude)
-            coords = parse_position_data(filename)
+                # returns a tuple of the form (latitude, longitude, altitude)
+                # still need to find a way to autosave OPUS email to file
+                # may need to use RTKLIB for local processing 
+               coords = parse_position_data(filename)
 
-            # write settings to base station
-            stngs = settings(source, timeout=args.timeout)
+                # write settings to base station
+                stngs = settings(source, timeout=args.timeout)
 
-            stngs.write("surveyed position", "broadcast", "true")
-            stngs.write("surveyed position", "surveyed lat", coords[0])
-            stngs.write("surveyed position", "surveyed lon", coords[1])
-            stngs.write("surveyed position", "surveyed alt", coords[2])
+                stngs.write("surveyed position", "broadcast", "true")
+                stngs.write("surveyed position", "surveyed lat", coords[0])
+                stngs.write("surveyed position", "surveyed lon", coords[1])
+                stngs.write("surveyed position", "surveyed alt", coords[2])
     
-            # TODO: Pipe position data from base station/rover to IRAD
+                # TODO: Pipe position data from base station/rover to IRAD
             except KeyboardInterrupt:
                 pass
 
