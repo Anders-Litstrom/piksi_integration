@@ -116,7 +116,7 @@ def parse_position_data(filename):
     for line in f_lines:
         tokens = line.split()
 
-        if len(tokens0 == 0:
+        if len(tokens0 == 0):
             continue
         
         if tokens[0] == "LAT:":
