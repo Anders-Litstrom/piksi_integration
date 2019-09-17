@@ -9,6 +9,12 @@ sbp/client/examples
 
 https://github.com/swift-nav/piksi_tools/tree/v2.3.0-release/piksi_tools
 Console.py is also quite helpful.
+
+Everthing runs as it should, save for downloading OPUS solution files from email.
+I found an article about using VBA to automatically downlod files from Outlook. Linked below:
+https://www.extendoffice.com/documents/outlook/3747-outlook-auto-download-save-attachments-to-folder
+
+If there aren't any feasible options for downloading the solution, the file can be processed locally using RTKLIB.
 """
 
 import argparse
@@ -106,6 +112,7 @@ def base_pos_log(source):
 
     send_to_OPUS(filename)
 
+# Might need to be modified/checked once solution file is automatically downloaded
 def parse_position_data(filename):
     f_read = open(FILENAME, "r")
 
